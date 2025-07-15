@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/lymvs/pokedexcli/internal/locationarea"
+
+	"github.com/lymvs/pokedexcli/internal/pokeapi"
 )
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*locationarea.Paginate) error
+	callback    func(*pokeapi.Paginate) error
 }
 
 var commands map[string]cliCommand
@@ -25,7 +26,7 @@ func cleanInput(text string) []string {
 }
 
 func startRepl() {
-	p := &locationarea.Paginate{}
+	p := &pokeapi.Paginate{}
 	commands = map[string]cliCommand{
 		"exit": {
 			name:        "exit",
@@ -38,14 +39,14 @@ func startRepl() {
 			callback:    commandHelp,
 		},
 		"map": {
-			name: 		 "map",
+			name:        "map",
 			description: "Displays the names of the next 20 location areas",
-			callback:	 locationarea.CommandMap,
+			callback:    commandMap,
 		},
 		"mapb": {
-			name: 		 "mapb",
+			name:        "mapb",
 			description: "Displays the names of the previous 20 location areas",
-			callback: 	 locationarea.CommandMapb,
+			callback:    commandMapb,
 		},
 	}
 

@@ -1,15 +1,17 @@
-package locationarea
+package main
 
 import (
 	"encoding/json"
-	"net/http"
+	"errors"
 	"fmt"
 	"io"
-	"errors"
+	"net/http"
+
+	"github.com/lymvs/pokedexcli/internal/pokeapi"
 )
 
-func CommandMap(c *Paginate) error {
-	url := c.Next
+func commandMapb(c *pokeapi.Paginate) error {
+	url := c.Previous
 	if url == "" {
 		url = "https://pokeapi.co/api/v2/location-area"
 	}
@@ -29,7 +31,7 @@ func CommandMap(c *Paginate) error {
 		return err
 	}
 
-	location := LocationArea{}
+	location := pokeapi.LocationArea{}
 	if err := json.Unmarshal(data, &location); err != nil {
 		return err
 	}

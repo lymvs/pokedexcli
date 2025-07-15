@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/lymvs/pokedexcli/internal/locationarea"
+
+	"github.com/lymvs/pokedexcli/internal/pokeapi"
 )
 
-func commandExit(_ *locationarea.Paginate) error {
+func commandExit(_ *pokeapi.Paginate) error {
 	fmt.Print("Closing the Pokedex... Goodbye!\n")
 	os.Exit(0)
 	return nil

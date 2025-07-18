@@ -16,19 +16,27 @@ func commandMap(c *pokeapi.Paginate) error {
 		url = "https://pokeapi.co/api/v2/location-area"
 	}
 
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
+	var data []byte
 
-	data, err := io.ReadAll(res.Body)
-	defer res.Body.Close()
+	if cachedData, found := c.CacheResult.Get(url); found {
+		data = cachedData
+	} else {
+		res, err := http.Get(url)
+		if err != nil {
+			return err
+		}
+		defer res.Body.Close()
 
-	if res.StatusCode > 299 {
-		return errors.New("Response failed")
-	}
-	if err != nil {
-		return err
+		if res.StatusCode > 299 {
+			return errors.New("Response failed")
+		}
+
+		data, err = io.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		c.CacheResult.Add(url, data)
 	}
 
 	location := pokeapi.LocationArea{}

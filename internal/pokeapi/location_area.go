@@ -1,5 +1,7 @@
 package pokeapi
 
+import "github.com/lymvs/pokedexcli/internal/pokecache"
+
 type LocationArea struct {
 	Count    int    `json:"count"`
 	Next     string `json:"next"`
@@ -11,6 +13,7 @@ type LocationArea struct {
 }
 
 type Paginate struct {
-	Next     string
-	Previous string
+	Next        string
+	Previous    string
+	CacheResult *pokecache.Cache
 }

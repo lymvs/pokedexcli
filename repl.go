@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/lymvs/pokedexcli/internal/pokeapi"
+	"github.com/lymvs/pokedexcli/internal/pokecache"
 )
 
 type cliCommand struct {
@@ -14,8 +16,6 @@ type cliCommand struct {
 	description string
 	callback    func(*pokeapi.Paginate) error
 }
-
-var commands map[string]cliCommand
 
 func cleanInput(text string) []string {
 	var words []string
@@ -25,9 +25,8 @@ func cleanInput(text string) []string {
 	return words
 }
 
-func startRepl() {
-	p := &pokeapi.Paginate{}
-	commands = map[string]cliCommand{
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand{
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
@@ -49,7 +48,13 @@ func startRepl() {
 			callback:    commandMapb,
 		},
 	}
+}
 
+func startRepl() {
+	p := &pokeapi.Paginate{
+		CacheResult: pokecache.NewCache(5 * time.Second),
+	}
+	commands := getCommands()
 	prompt := "Pokedex > "
 	scanner := bufio.NewScanner(os.Stdin)
 

@@ -6,7 +6,7 @@ import (
 	"github.com/lymvs/pokedexcli/internal/pokeapi"
 )
 
-func commandHelp(_ *pokeapi.Paginate) error {
+func commandHelp(_ *pokeapi.Paginate, _ []string) error {
 	fmt.Print("Welcome to the Pokedex!\nUsage:\n\n")
 	commands := getCommands()
 	for _, command := range commands {

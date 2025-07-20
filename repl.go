@@ -14,7 +14,7 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*pokeapi.Paginate) error
+	callback    func(*pokeapi.Paginate, []string) error
 }
 
 func cleanInput(text string) []string {
@@ -47,6 +47,11 @@ func getCommands() map[string]cliCommand {
 			description: "Displays the names of the previous 20 location areas",
 			callback:    commandMapb,
 		},
+		"explore": {
+			name:        "explore",
+			description: "Displays the names of the pokemons found in the given location area",
+			callback:    commandExplore,
+		},
 	}
 }
 
@@ -64,7 +69,8 @@ func startRepl() {
 
 		input := cleanInput(scanner.Text())
 		if command, ok := commands[input[0]]; ok {
-			err := command.callback(p)
+			args := input[1:]
+			err := command.callback(p, args)
 			if err != nil {
 				fmt.Print(err)
 			}

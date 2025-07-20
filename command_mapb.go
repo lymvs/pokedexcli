@@ -10,7 +10,7 @@ import (
 	"github.com/lymvs/pokedexcli/internal/pokeapi"
 )
 
-func commandMapb(c *pokeapi.Paginate) error {
+func commandMapb(c *pokeapi.Paginate, _ []string) error {
 	url := c.Previous
 	if url == "" {
 		url = "https://pokeapi.co/api/v2/location-area"

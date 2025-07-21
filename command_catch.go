@@ -44,7 +44,7 @@ func commandCatch(c *pokeapi.Paginate, args []string) error {
 	source := rand.NewSource(time.Now().UnixNano())
 	rng := rand.New(source)
 	rnn := rng.Float64()
-	catch_probability := 60.0 / float64(pokemon.BaseExperience)
+	catch_probability := 50.0 / float64(pokemon.BaseExperience)
 	if rnn < catch_probability {
 		fmt.Printf("%s escaped!\n", pokemon_name)
 	} else {

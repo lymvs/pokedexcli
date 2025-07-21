@@ -17,19 +17,25 @@ func commandExplore(c *pokeapi.Paginate, args []string) error {
 
 	var data []byte
 
-	res, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
+	if cachedData, found := c.CacheResult.Get(url); found {
+		data = cachedData
+	} else {
+		res, err := http.Get(url)
+		if err != nil {
+			return err
+		}
+		defer res.Body.Close()
 
-	if res.StatusCode > 299 {
-		return errors.New("Response failed")
-	}
+		if res.StatusCode > 299 {
+			return errors.New("Response failed")
+		}
 
-	data, err = io.ReadAll(res.Body)
-	if err != nil {
-		return err
+		data, err = io.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		c.CacheResult.Add(url, data)
 	}
 
 	locationName := pokeapi.LocationAreaName{}
